@@ -19,9 +19,17 @@ def predict_news(news_text):
     
     # Probability of the prediction
     prob = prediction_prob[0][prediction[0]] * 100  # Convert to percentage
-    return ("Fake News", prob) if prediction[0] == 0 else ("Real News", prob)
+    label = "TRUE" if prediction[0] == 1 else "FALSE"
+    
+    # Determine the message based on confidence benchmarks
+    if 40 <= prob <= 60:
+        return f"This information is possibly {label} with an confidence level of {prob:.2f}%."
+    elif 66.01 <= prob <= 70:
+        return f"This information is likely {label} with an confidence level of {prob:.2f}%."
+    else:
+        return f"This information is {label}!"
 
 # Example news to test
 news_to_test = input("Enter a news article: ")
-result, confidence = predict_news(news_to_test)
-print(f"The news is: {result} with {confidence:.2f}% confidence.")
+result = predict_news(news_to_test)
+print(result)
