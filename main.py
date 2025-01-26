@@ -15,33 +15,41 @@ with open('models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
 def home():
     return render_template("main.html")
 
-# Predict route
-@app.route('/predict', methods=['POST'])
+# Updated predict route
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    """
-    Predicts whether a news article is fake or real.
-    """
-    data = request.json
-    news_text = data.get('text', '')
+    prediction = None
+    confidence = None
 
-    if not news_text.strip():
-        return jsonify({"error": "No text provided"}), 400
+    if request.method == 'POST':
+        if request.is_json:  # Handle JSON input (API)
+            data = request.json
+            news_text = data.get('text', '').strip()
+        else:  # Handle form input (HTML form submission)
+            news_text = request.form.get('news_text', '').strip()
 
-    text_tfidf = vectorizer.transform([news_text])
-    prediction = model.predict(text_tfidf)[0]
-    confidence = model.predict_proba(text_tfidf).max() * 100
+        if news_text:
+            # Pass the text to the model
+            text_tfidf = vectorizer.transform([news_text])
+            pred = model.predict(text_tfidf)[0]
+            confidence = model.predict_proba(text_tfidf).max() * 100
+            prediction = "TRUE" if pred == 1 else "FALSE"
+        else:
+            return jsonify({"error": "No text provided"}), 400
 
+    # If it's a form submission, render the HTML template with the results
+    if not request.is_json:
+        return render_template("main.html", prediction=prediction, confidence=confidence)
+
+    # If it's a JSON API request, return the prediction and confidence
     return jsonify({
-        "label": "TRUE" if prediction == 1 else "FALSE",
-        "confidence": round(confidence, 2)
+        "label": prediction,
+        "confidence": round(confidence, 2) if confidence is not None else None
     })
 
 # Feedback route
 @app.route('/feedback', methods=['POST'])
 def feedback():
-    """
-    Collects user feedback on predictions and stores it in the feedback.db database.
-    """
     data = request.json
 
     # Extract feedback data
@@ -49,11 +57,9 @@ def feedback():
     predicted_label = data.get('predicted_label', '').strip()
     actual_label = data.get('actual_label', '').strip()
 
-    # Validate input
     if not news_text or not predicted_label or not actual_label:
-        return jsonify({"error": "Invalid feedback data. Please provide 'text', 'predicted_label', and 'actual_label'."}), 400
+        return jsonify({"error": "Invalid feedback data"}), 400
 
-    # Save feedback in the feedback.db database
     try:
         conn = sqlite3.connect('feedback.db')
         cursor = conn.cursor()
