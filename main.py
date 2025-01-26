@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import sqlite3
 import pickle
+from textblob import TextBlob
 
 app = Flask(__name__)
 
@@ -10,6 +11,22 @@ with open('models/fake_news_model.pkl', 'rb') as model_file:
 with open('models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
 
+# Bias analysis function
+def bias_check(news):
+    """
+    Analyzes the polarity and subjectivity of the text using TextBlob.
+    """
+    blob = TextBlob(news)
+    sentiment = blob.sentiment
+
+    # Polarity: -1 to 1 (negative to positive sentiment)
+    polarity = sentiment.polarity
+
+    # Subjectivity: 0 (completely objective) to 1 (completely subjective)
+    subjectivity = sentiment.subjectivity
+
+    return polarity, subjectivity
+
 # Root route
 @app.route('/')
 def home():
@@ -18,8 +35,14 @@ def home():
 # Updated predict route
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    """
+    Predicts whether a news article is fake or real and returns results to the HTML frontend.
+    """
     prediction = None
     confidence = None
+    polarity = None
+    subjectivity = None
+    news_text = None
 
     if request.method == 'POST':
         if request.is_json:  # Handle JSON input (API)
@@ -34,22 +57,37 @@ def predict():
             pred = model.predict(text_tfidf)[0]
             confidence = model.predict_proba(text_tfidf).max() * 100
             prediction = "TRUE" if pred == 1 else "FALSE"
+
+            # Perform bias analysis
+            polarity, subjectivity = bias_check(news_text)
         else:
-            return jsonify({"error": "No text provided"}), 400
+            return render_template("main.html", error="No text provided. Please enter an article.")
 
     # If it's a form submission, render the HTML template with the results
     if not request.is_json:
-        return render_template("main.html", prediction=prediction, confidence=confidence)
+        return render_template(
+            "main.html",
+            prediction=prediction,
+            confidence=round(confidence, 2) if confidence else None,
+            polarity=round(polarity, 2) if polarity else None,
+            subjectivity=round(subjectivity, 2) if subjectivity else None,
+            news_text=news_text,
+        )
 
     # If it's a JSON API request, return the prediction and confidence
     return jsonify({
         "label": prediction,
-        "confidence": round(confidence, 2) if confidence is not None else None
+        "confidence": round(confidence, 2) if confidence else None,
+
+
     })
 
 # Feedback route
 @app.route('/feedback', methods=['POST'])
 def feedback():
+    """
+    Collects user feedback on predictions and stores it in the feedback.db database.
+    """
     data = request.json
 
     # Extract feedback data
