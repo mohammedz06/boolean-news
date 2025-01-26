@@ -1,9 +1,12 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+
 
 * {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -12,20 +15,24 @@ body {
   height: 100%;
 }
 
+
 button:focus-visible {
   outline: 2px solid #4a90e2 !important;
   outline: -webkit-focus-ring-color auto 5px !important;
 }
 
+
 a {
   text-decoration: none;
 }
+
 
 @font-face {
   font-family: "Rounded Mplus 1c Bold-Bold";
   src: url("https://anima-uploads.s3.amazonaws.com/projects/6070cab4d792a714f6f3f671/fonts/mplusrounded1c-bold.ttf")
     format("truetype");
 }
+
 
 .main {
   background-color: #5a4565;
@@ -36,11 +43,13 @@ a {
   min-height: 100vh;
 }
 
+
 .main .div {
   width: 1440px;
   height: 1024px;
   position: relative;
 }
+
 
 .main .overlap-group {
   width: 1350px;
@@ -52,6 +61,7 @@ a {
   border-radius: 45px;
 }
 
+
 .main .rectangle {
   position: absolute;
   width: 1339px;
@@ -62,6 +72,7 @@ a {
   border-radius: 45px;
 }
 
+
 .main .group {
   position: absolute;
   width: 864px;
@@ -69,6 +80,7 @@ a {
   top: 121px;
   left: 244px;
 }
+
 
 .main .boolean-news {
   position: absolute;
@@ -78,6 +90,7 @@ a {
   left: 25px;
 }
 
+
 .main .isolation-mode {
   position: absolute;
   width: 158px;
@@ -85,6 +98,7 @@ a {
   top: 20px;
   left: 708px;
 }
+
 
 .main .rectangle-2 {
   position: absolute;
@@ -95,6 +109,7 @@ a {
   background-color: #ffffff;
   border-radius: 100px;
 }
+
 
 .main .text-wrapper {
   position: absolute;
@@ -108,6 +123,7 @@ a {
   text-align: center;
 }
 
+
 .main .overlap {
   width: 375px;
   height: 325px;
@@ -117,6 +133,7 @@ a {
   background-color: #cec9d6;
   border-radius: 45px;
 }
+
 
 .main .rectangle-3 {
   position: absolute;
@@ -128,6 +145,7 @@ a {
   border-radius: 45px;
 }
 
+
 .main .overlap-2 {
   width: 950px;
   height: 325px;
@@ -137,6 +155,7 @@ a {
   background-color: #cec9d6;
   border-radius: 45px;
 }
+
 
 .main .rectangle-4 {
   position: absolute;
@@ -148,6 +167,7 @@ a {
   border-radius: 45px;
 }
 
+
 .main .ellipse {
   position: absolute;
   width: 270px;
@@ -156,6 +176,7 @@ a {
   left: 85px;
 }
 
+
 .main .polygon {
   position: absolute;
   width: 40px;
@@ -163,6 +184,7 @@ a {
   top: 24px;
   left: 200px;
 }
+
 
 .news-input {
   position: absolute;
@@ -176,50 +198,129 @@ a {
   font-size: 24px;
   font-family: "Rounded Mplus 1c Bold-Bold", Helvetica;
   font-weight: 700;
-  color: #000;
   padding-left: 20px;
+  resize: none;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
+
 .submit-btn {
+  position: relative;
+  z-index: 9999;
   display: inline-block;
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #4a90e2;
-  color: white;
+  background-color: #3E204F;
+  color: #CEC9D6;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  left: 875px;
+  top: 350px;
+  font-size: xx-large;
+  font-family: "Nunito", sans-serif;
 }
 
+
 .submit-btn:hover {
-  background-color: #357ab7;
+  background-color: #888888;
 }
+
 
 /* Bar Graph Styling */
 .bar-container {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  width: 80%; /* Adjust the width to fit your layout */
-  background-color: #ddd;
-  border-radius: 5px;
+  margin-top: 22px;
+  margin-bottom: 12px;
+  width: 100%;
+  background-color: #bcaecc;
+  border-radius: 10px;
   overflow: hidden;
-  height: 25px;
+  height: 50px;
   position: relative;
+  font-family: "Nunito", sans-serif;
 }
+
 
 .bar {
   height: 100%;
   text-align: center;
   color: white;
-  line-height: 25px;
-  font-size: 14px;
+  line-height: 55px;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Nunito", sans-serif;
 }
+
 
 /* Specific Bars for Polarity and Subjectivity */
 .bar.polarity {
-  background-color: #6fa3ef;
+  background-color: #b293b7;
 }
 
+
 .bar.subjectivity {
-  background-color: #f7a072;
+  background-color: #9398b7;
 }
+
+
+/* Positioning Fixes for the Left Box */
+#polarity-bar,
+#subjectivity-bar {
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+
+.result-box-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  margin: auto;
+  padding-top: 30px;
+}
+
+
+/* Styling for True/False Images */
+.result-true,
+.result-false {
+  display: none; /* Hidden by default */
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 20px;
+  z-index: 9999;
+}
+
+
+.result-box-right img {
+  display: block; /* Displayed when conditionally rendered */
+}
+
+
+.result-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 80%;
+  max-height: 50%;
+  border-radius: 10px;
+  position: relative;
+  z-index: 9999;
+}
+
+
+
+
+
+.result-display{
+  display: block;
+  font-size: xx-large;
+  position: relative;
+  z-index: 9999;
+  font-family: "Nunito", sans-serif;
+  color: #3E204F;
+}
+
+
