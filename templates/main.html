@@ -10,22 +10,14 @@
   <body>
     <div class="main">
       <div class="div">
-        <!-- Existing Design Elements -->
+        <!-- Input Section -->
         <div class="overlap-group">
           <div class="rectangle"></div>
           <div class="group">
-            <img
-              class="boolean-news"
-              src="https://c.animaapp.com/RG4WDjBl/img/boolean-news.png"
-            />
-            <img
-              class="isolation-mode"
-              src="https://c.animaapp.com/RG4WDjBl/img/isolation-mode.svg"
-            />
+            <img class="boolean-news" src="https://c.animaapp.com/RG4WDjBl/img/boolean-news.png" />
+            <img class="isolation-mode" src="https://c.animaapp.com/RG4WDjBl/img/isolation-mode.svg" />
           </div>
           <div class="rectangle-2"></div>
-
-          <!-- Form for News Input -->
           <form action="/predict" method="POST">
             <textarea
               name="news_text"
@@ -37,40 +29,53 @@
           </form>
         </div>
 
+
         <!-- Results Section -->
         <div class="overlap">
           <div class="rectangle-3"></div>
-          <div class="result-display">
-            {% if prediction %}
-              <p><strong>Prediction:</strong> {{ prediction }}</p>
-              <p><strong>Confidence:</strong> {{ confidence }}%</p>
+          <div class="result-box-left">
+            {% if polarity %}
+            <div class="bar-container">
+              <div class="bar polarity" style="width: {{ polarity }}%;">
+                Polarity: {{ polarity }}%
+              </div>
+            </div>
+            {% endif %}
+            {% if subjectivity %}
+            <div class="bar-container">
+              <div class="bar subjectivity" style="width: {{ subjectivity }}%;">
+                Subjectivity:{{ subjectivity }}%
+              </div>
+            </div>
             {% endif %}
           </div>
         </div>
 
+
+        <!-- Prediction Display -->
         <div class="overlap-2">
           <div class="rectangle-4"></div>
-
-          <!-- Polarity Bar Graph -->
-          <div class="bar-container">
-            <div
-              class="bar polarity"
-              style="width: {{ polarity }}%;"
-            >
-              Polarity: {{ polarity }}%
-            </div>
-          </div>
-
-          <!-- Subjectivity Bar Graph -->
-          <div class="bar-container">
-            <div
-              class="bar subjectivity"
-              style="width: {{ subjectivity }}%;"
-            >
-              Subjectivity: {{ subjectivity }}%
-            </div>
+          <div class="result-display">
+            {% if prediction == "TRUE" %}
+            <img style="top: 125px; " src="{{ url_for('static', filename='TRUE.png') }}" class="result-image" alt="True" />
+            {% elif prediction == "FALSE" %}
+            <img style="top: 125px;" src="{{ url_for('static', filename='FALSE.png') }}" class="result-image" alt="False" />
+            {% endif %}
+            {% if prediction %}
+            <p>
+              <span style="position: relative; top: 150px; left: 230px">
+                <strong>With a confidence of </strong>
+              </span>
+              <span style="position: relative; top:150px; left: 230px">{{ confidence }}%!</span>
+              
+            </p>
+            
+            {% endif %}
           </div>
         </div>
+
+
+        <!-- Feedback Section -->
       </div>
     </div>
   </body>
