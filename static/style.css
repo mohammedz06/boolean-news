@@ -23,14 +23,11 @@ a {
 
 @font-face {
   font-family: "Rounded Mplus 1c Bold-Bold";
-  src: url("https://anima-uploads.s3.amazonaws.com/projects/6070cab4d792a714f6f3f671/fonts/mplusrounded1c-bold.ttf")
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/6070cab4d792a714f6f3f671/fonts/mplusrounded1c-bold.ttf"
+)
+
     format("truetype");
 }
-
-/*
-   Removed the invalid block of code here.
-   It was causing everything below it to be ignored!
-*/
 
 .main {
   background-color: #5a4565;
@@ -38,7 +35,7 @@ a {
   flex-direction: row;
   justify-content: center;
   width: 100%;
-  min-height: 100vh; /* Ensures full-viewport coverage. */
+  min-height: 100vh;
 }
 
 .main .div {
@@ -183,4 +180,49 @@ a {
   font-weight: 700;
   color: #000;
   padding-left: 20px;
+}
+
+.submit-btn {
+  position: relative; /* Ensures z-index takes effect */
+  z-index: 9999; /* Brings it to the very top */
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #b50c5b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.submit-btn:hover {
+  background-color: #357ab7;
+}
+
+
+/* Styling for the result container */
+.result {
+  position: absolute;
+  top: 750px; /* Adjust for vertical placement */
+  left: 600px; /* Adjust for horizontal placement */
+  width: 300px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+  font-family: "Rounded Mplus 1c Bold-Bold", Helvetica;
+  font-size: 20px;
+  color: #333333;
+  border: 2px solid #bcaecc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for Subjectivity and Polarity Results */
+.result p {
+  margin: 10px 0;
+  color: #4a4a4a;
+}
+
+.result p span {
+  font-weight: bold;
+  color: #5a4565; /* Matches the overall theme */
 }
