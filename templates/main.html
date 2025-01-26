@@ -37,34 +37,39 @@
           </form>
         </div>
 
-        <!-- Result Display Section -->
-        <div class="result-section">
-          {% if prediction %}
-          <div class="result">
-            <p><strong>Prediction:</strong> {{ prediction }}</p>
-            <p><strong>Confidence:</strong> {{ confidence }}%</p>
-            <p><strong>Subjectivity:</strong> {{ subjectivity }}%</p>
-            <p><strong>Polarity:</strong> {{ polarity }}%</p>
-          </div>
-          {% endif %}
-        </div>
-
-        <!-- Existing Overlap Divs -->
+        <!-- Results Section -->
         <div class="overlap">
           <div class="rectangle-3"></div>
-          <div class="rectangle-3"></div>
+          <div class="result-display">
+            {% if prediction %}
+              <p><strong>Prediction:</strong> {{ prediction }}</p>
+              <p><strong>Confidence:</strong> {{ confidence }}%</p>
+            {% endif %}
+          </div>
         </div>
 
         <div class="overlap-2">
           <div class="rectangle-4"></div>
-          <img
-            class="ellipse"
-            src="https://c.animaapp.com/RG4WDjBl/img/ellipse-1.svg"
-          />
-          <img
-            class="polygon"
-            src="https://c.animaapp.com/RG4WDjBl/img/polygon-1.svg"
-          />
+
+          <!-- Polarity Bar Graph -->
+          <div class="bar-container">
+            <div
+              class="bar polarity"
+              style="width: {{ polarity }}%;"
+            >
+              Polarity: {{ polarity }}%
+            </div>
+          </div>
+
+          <!-- Subjectivity Bar Graph -->
+          <div class="bar-container">
+            <div
+              class="bar subjectivity"
+              style="width: {{ subjectivity }}%;"
+            >
+              Subjectivity: {{ subjectivity }}%
+            </div>
+          </div>
         </div>
       </div>
     </div>
