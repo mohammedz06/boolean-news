@@ -11,6 +11,7 @@ with open('models/fake_news_model.pkl', 'rb') as model_file:
 with open('models/tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
 
+
 # Bias analysis function
 def bias_check(news):
     """
@@ -27,17 +28,16 @@ def bias_check(news):
 
     return polarity, subjectivity
 
+
 # Root route
 @app.route('/')
 def home():
     return render_template("main.html")
 
-# Updated predict route
+
+# Predict route
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    """
-    Predicts whether a news article is fake or real and returns results to the HTML frontend.
-    """
     prediction = None
     confidence = None
     polarity = None
@@ -60,6 +60,8 @@ def predict():
 
             # Perform bias analysis
             polarity, subjectivity = bias_check(news_text)
+            polarity = round((polarity + 1) * 50, 2)  # Convert -1 to 1 range into 0-100%
+            subjectivity = round(subjectivity * 100, 2)  # Convert 0-1 to percentage
         else:
             return render_template("main.html", error="No text provided. Please enter an article.")
 
@@ -69,8 +71,8 @@ def predict():
             "main.html",
             prediction=prediction,
             confidence=round(confidence, 2) if confidence else None,
-            polarity=round(polarity, 2) if polarity else None,
-            subjectivity=round(subjectivity, 2) if subjectivity else None,
+            polarity=polarity if polarity else None,
+            subjectivity=subjectivity if subjectivity else None,
             news_text=news_text,
         )
 
@@ -78,9 +80,10 @@ def predict():
     return jsonify({
         "label": prediction,
         "confidence": round(confidence, 2) if confidence else None,
-
-
+        "polarity": polarity,
+        "subjectivity": subjectivity,
     })
+
 
 # Feedback route
 @app.route('/feedback', methods=['POST'])
