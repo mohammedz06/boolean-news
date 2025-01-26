@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Boolean-News</title>
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
@@ -26,21 +25,26 @@
           </div>
           <div class="rectangle-2"></div>
 
-          <!-- New Form for News Input -->
+          <!-- Form for News Input -->
           <form action="/predict" method="POST">
             <textarea
               name="news_text"
               class="news-input"
               placeholder="Paste your article here..."
+              required
             ></textarea>
             <button type="submit" class="submit-btn">Analyze Article</button>
           </form>
+        </div>
 
-          <!-- Result Display Section -->
+        <!-- Result Display Section -->
+        <div class="result-section">
           {% if prediction %}
           <div class="result">
             <p><strong>Prediction:</strong> {{ prediction }}</p>
             <p><strong>Confidence:</strong> {{ confidence }}%</p>
+            <p><strong>Subjectivity:</strong> {{ subjectivity }}%</p>
+            <p><strong>Polarity:</strong> {{ polarity }}%</p>
           </div>
           {% endif %}
         </div>
@@ -50,6 +54,7 @@
           <div class="rectangle-3"></div>
           <div class="rectangle-3"></div>
         </div>
+
         <div class="overlap-2">
           <div class="rectangle-4"></div>
           <img
