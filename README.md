@@ -1,6 +1,4 @@
 # boolean-news
- QHACKS 2025
-
 QHACKS 2025
 
 **Inspiration
